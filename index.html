@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubre tu Elemento - Guía Interactiva</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f7ff;
+            color: #333;
+        }
+        
+        .accordion-item {
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background-color: white;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            background-color: #dbeafe;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            background-color: #bfdbfe;
+        }
+        
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 10000px;
+            padding: 20px;
+        }
+        
+        .section-title {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid #bfdbfe;
+            padding: 12px;
+            margin-top: 6px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .recording-indicator {
+            color: #ef4444;
+            display: none;
+            font-size: 0.875rem;
+            margin-left: 10px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .save-indicator {
+            color: #22c55e;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 0.875rem;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .question-container {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .keyword-tag {
+            display: inline-block;
+            background-color: #bfdbfe;
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+        
+        #exportTextArea {
+            min-height: 200px;
+            background-color: #f3f4f6;
+            font-family: monospace;
+        }
+        
+        .microphone-tooltip {
+            display: block;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 2px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-blue-600">Guía Interactiva: Descubre tu Elemento</h1>
+            <div class="mt-2 text-gray-600">
+                <p>Por: Mario Espínola</p>
+                <p class="text-sm italic">Inspirado en diversas experiencias y autores, tomando el concepto de 'El Elemento' de Sir Ken Robinson.</p>
+            </div>
+        </header>
+
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+            <h2 class="text-xl font-semibold mb-3">¿Qué es "El Elemento"?</h2>
+            <p class="mb-4">
+                Según Sir Ken Robinson, "El Elemento" es ese punto donde confluye lo que se te da bien (tus aptitudes naturales) y lo que amas hacer (tus pasiones). 
+                Esta guía te ayudará a explorar tu propio "Elemento" a través de una serie de preguntas reflexivas.
+            </p>
+            <p class="text-sm bg-blue-50 p-3 rounded-md border-l-4 border-blue-500">
+                <strong>Instrucciones:</strong> Responde cada pregunta de forma individual escribiendo tus reflexiones. Tu progreso se guardará automáticamente en este navegador.
+            </p>
+            
+            <div id="saveIndicator" class="save-indicator">
+                <i class="fas fa-check-circle"></i> Progreso guardado
+            </div>
+        </div>
+
+        <!-- Fase 1 -->
+        <div class="accordion-item">
+            <div class="accordion-header flex justify-between items-center" data-accordion="fase1">
+                <span>Fase 1: Reflexión sobre el Pasado y el Presente</span>
+                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+            </div>
+            <div class="accordion-content" id="fase1">
+                <!-- Recuerdos de la Infancia -->
+                <h3 class="section-title">Recuerdos de la Infancia</h3>
+                
+                <div class="question-container">
+                    <label for="q1_1" class="font-medium block mb-1">1. ¿Qué actividades disfrutabas tanto de niño/a que perdías la noción del tiempo?</label>
+                    <textarea id="q1_1" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_1">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_1"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q1_2" class="font-medium block mb-1">2. ¿Qué habilidades o destrezas te destacaban entre tus compañeros cuando eras niño/a?</label>
+                    <textarea id="q1_2" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_2">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_2"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q1_3" class="font-medium block mb-1">3. ¿Qué sueños o aspiraciones tenías en tu infancia sobre lo que querías ser o hacer?</label>
+                    <textarea id="q1_3" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_3">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_3"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <!-- Experiencias de Fluidez -->
+                <h3 class="section-title">Experiencias de Fluidez</h3>
+                
+                <div class="question-container">
+                    <label for="q1_4" class="font-medium block mb-1">1. ¿En qué actividades o tareas actuales pierdes la noción del tiempo cuando las realizas?</label>
+                    <textarea id="q1_4" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_4">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_4"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q1_5" class="font-medium block mb-1">2. ¿Qué actividades te producen una sensación de satisfacción profunda al realizarlas?</label>
+                    <textarea id="q1_5" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_5">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_5"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <!-- Fortalezas y Debilidades -->
+                <h3 class="section-title">Fortalezas y Debilidades</h3>
+                
+                <div class="question-container">
+                    <label for="q1_6" class="font-medium block mb-1">1. ¿Qué habilidades o talentos te han reconocido otras personas?</label>
+                    <textarea id="q1_6" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_6">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_6"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q1_7" class="font-medium block mb-1">2. ¿Qué tareas o actividades realizas con facilidad mientras que otros parecen esforzarse con ellas?</label>
+                    <textarea id="q1_7" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_7">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_7"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q1_8" class="font-medium block mb-1">3. ¿En qué áreas sientes que tienes limitaciones o dificultades?</label>
+                    <textarea id="q1_8" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q1_8">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q1_8"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 2 -->
+        <div class="accordion-item">
+            <div class="accordion-header flex justify-between items-center" data-accordion="fase2">
+                <span>Fase 2: Exploración y Apertura a Nuevas Posibilidades</span>
+                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+            </div>
+            <div class="accordion-content" id="fase2">
+                <!-- Intereses y Curiosidades -->
+                <h3 class="section-title">Intereses y Curiosidades</h3>
+                
+                <div class="question-container">
+                    <label for="q2_1" class="font-medium block mb-1">1. ¿Qué temas o actividades te generan verdadera curiosidad?</label>
+                    <textarea id="q2_1" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q2_1">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q2_1"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q2_2" class="font-medium block mb-1">2. ¿Qué contenidos (libros, videos, podcasts) consumes en tu tiempo libre?</label>
+                    <textarea id="q2_2" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q2_2">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q2_2"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <!-- Valores y Propósito -->
+                <h3 class="section-title">Valores y Propósito</h3>
+                
+                <div class="question-container">
+                    <label for="q2_3" class="font-medium block mb-1">1. ¿Qué valores son fundamentales en tu vida?</label>
+                    <textarea id="q2_3" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q2_3">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q2_3"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q2_4" class="font-medium block mb-1">2. ¿Qué tipo de impacto te gustaría generar en tu entorno o en el mundo?</label>
+                    <textarea id="q2_4" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q2_4">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q2_4"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <!-- Exploración de Posibilidades -->
+                <h3 class="section-title">Exploración de Posibilidades</h3>
+                
+                <div class="question-container">
+                    <label for="q2_5" class="font-medium block mb-1">1. ¿Qué profesiones, carreras o actividades has considerado que podrían alinearse con tus talentos y pasiones?</label>
+                    <textarea id="q2_5" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q2_5">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q2_5"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q2_6" class="font-medium block mb-1">2. ¿Qué personas admiras y por qué? ¿Qué aspectos de sus carreras o vidas te resultan atractivos?</label>
+                    <textarea id="q2_6" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q2_6">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q2_6"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 3 -->
+        <div class="accordion-item">
+            <div class="accordion-header flex justify-between items-center" data-accordion="fase3">
+                <span>Fase 3: Planificación y Acción</span>
+                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+            </div>
+            <div class="accordion-content" id="fase3">
+                <!-- Metas y Objetivos -->
+                <h3 class="section-title">Metas y Objetivos</h3>
+                
+                <div class="question-container">
+                    <label for="q3_1" class="font-medium block mb-1">1. ¿Qué metas a corto plazo (3-6 meses) podrías establecer para explorar tu "elemento"?</label>
+                    <textarea id="q3_1" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q3_1">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q3_1"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q3_2" class="font-medium block mb-1">2. ¿Qué objetivos a mediano plazo (1-2 años) te gustaría alcanzar en relación con tu desarrollo personal o profesional?</label>
+                    <textarea id="q3_2" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q3_2">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q3_2"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <!-- Plan de Acción -->
+                <h3 class="section-title">Plan de Acción</h3>
+                
+                <div class="question-container">
+                    <label for="q3_3" class="font-medium block mb-1">1. ¿Qué recursos (cursos, libros, mentores, herramientas) necesitas para avanzar hacia tus metas?</label>
+                    <textarea id="q3_3" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q3_3">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q3_3"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q3_4" class="font-medium block mb-1">2. ¿Qué obstáculos prevés y cómo planeas superarlos?</label>
+                    <textarea id="q3_4" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q3_4">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q3_4"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <div class="question-container">
+                    <label for="q3_5" class="font-medium block mb-1">3. ¿Cómo medirás tu progreso hacia tus metas?</label>
+                    <textarea id="q3_5" rows="3" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="q3_5">
+                        <i class="fas fa-microphone"></i> Grabar
+                    </button>
+                    <span class="recording-indicator" id="recording-q3_5"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Análisis y Exportación -->
+        <div class="accordion-item">
+            <div class="accordion-header flex justify-between items-center" data-accordion="analisis">
+                <span>Análisis y Exportación</span>
+                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+            </div>
+            <div class="accordion-content" id="analisis">
+                <!-- Síntesis Personal -->
+                <h3 class="section-title">Tu Síntesis del "Elemento"</h3>
+                
+                <div class="question-container">
+                    <label for="sintesis" class="font-medium block mb-1">
+                        A partir de todas tus reflexiones, ¿cómo describirías tu "Elemento"? ¿Cuál crees que es la confluencia entre tus talentos y pasiones?
+                    </label>
+                    <textarea id="sintesis" rows="5" placeholder="Escribe tu síntesis aquí..."></textarea>
+                    <button class="btn btn-secondary record-btn" data-target="sintesis">
+                        <i class="fas fa-microphone"></i> Grabar Síntesis
+                    </button>
+                    <span class="recording-indicator" id="recording-sintesis"><i class="fas fa-circle"></i> Grabando...</span>
+                    <span class="microphone-tooltip">¿Prefieres hablar? Cuéntame en un audio como si hablaras con un amigo.</span>
+                </div>
+                
+                <!-- Análisis de Palabras Clave -->
+                <h3 class="section-title">Análisis de Palabras Clave</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Al hacer clic en el botón, se analizarán tus respuestas para identificar palabras frecuentes que podrían revelar patrones.
+                </p>
+                <button id="analyzeKeywordsBtn" class="btn btn-primary mb-4">
+                    <i class="fas fa-search"></i> Analizar Palabras Clave (Fase 1 y 2)
+                </button>
+                <div id="analysisResults" class="bg-blue-50 p-4 rounded-md hidden mb-6"></div>
+                
+                <!-- Exportación para IA -->
+                <h3 class="section-title">Exportar para Análisis IA</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Este botón exportará todas tus respuestas en un formato organizado que podrás copiar y utilizar con una IA para un análisis más profundo.
+                </p>
+                <button id="exportForAIBtn" class="btn btn-primary mb-4">
+                    <i class="fas fa-file-export"></i> Exportar para Análisis IA
+                </button>
+                
+                <div id="exportArea" class="hidden">
+                    <textarea id="exportTextArea" class="mb-4" readonly></textarea>
+                    <button id="copyExportBtn" class="btn btn-secondary mb-6">
+                        <i class="fas fa-copy"></i> Copiar al Portapapeles
+                    </button>
+                    
+                    <div class="bg-gray-50 p-4 rounded-md mb-4">
+                        <h4 class="font-semibold mb-2">Prompts para usar con la IA:</h4>
+                        <div class="mb-3">
+                            <p class="font-medium">Prompt 1 (Análisis Inicial):</p>
+                            <p class="text-sm bg-white p-3 rounded border border-gray-200">
+                                "Actúa como un profesional en desarrollo personal y orientación vocacional. Analiza mis reflexiones detalladamente para identificar patrones, fortalezas, intereses y valores. Basándote en este análisis, sugiere 3-5 caminos profesionales o áreas que parezcan alinearse con mi 'Elemento' (la confluencia entre mis talentos naturales y mis pasiones). Para cada sugerencia, explica por qué crees que sería adecuada según mis reflexiones."
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <p class="font-medium">Prompt 2 (Feedback sobre Planes):</p>
+                            <p class="text-sm bg-white p-3 rounded border border-gray-200">
+                                "Como experto en desarrollo personal y orientación profesional, analiza mis reflexiones y planes de acción. ¿Son coherentes mis objetivos con lo que identifico como mis fortalezas y pasiones? ¿Hay oportunidades que no esté considerando? ¿Hay ajustes que podrías sugerir para que mis planes estén mejor alineados con mi 'Elemento'? Ofrece retroalimentación constructiva y sugerencias específicas para mejorar mi plan."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón para limpiar -->
+        <div class="mt-8 text-center">
+            <button id="clearAllBtn" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Limpiar Todas las Respuestas
+            </button>
+        </div>
+        
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>© 2025 - Aplicación Web "Descubre tu Elemento" - Por Mario Espínola</p>
+            <p class="mt-1">Inspirado en diversas experiencias y autores, tomando el concepto de 'El Elemento' de Sir Ken Robinson.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ========== VARIABLES GLOBALES ==========
+            let recognition = null;
+            let isRecording = false;
+            let currentTextarea = null;
+            
+            // Constantes para el almacenamiento local
+            const STORAGE_KEY = 'descubreTuElemento';
+            
+            // ========== FUNCIONES ACCORDION ==========
+            // Inicializar accordions
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const contentId = header.getAttribute('data-accordion');
+                    const content = document.getElementById(contentId);
+                    
+                    // Toggle active class
+                    content.classList.toggle('active');
+                    
+                    // Rotate chevron
+                    const chevron = header.querySelector('.fa-chevron-down');
+                    if (content.classList.contains('active')) {
+                        chevron.style.transform = 'rotate(180deg)';
+                    } else {
+                        chevron.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+            
+            // ========== FUNCIONES DE GRABACIÓN DE VOZ ==========
+            // Comprobar si el navegador soporta la API de reconocimiento de voz
+            function checkSpeechRecognitionSupport() {
+                return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+            }
+            
+            // Inicializar reconocimiento de voz
+            function initSpeechRecognition() {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognition) return null;
+                
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'es-ES'; // Idioma español
+                recognition.continuous = true;
+                recognition.interimResults = false;
+                
+                return recognition;
+            }
+            
+            // Manejar botones de grabación
+            const recordButtons = document.querySelectorAll('.record-btn');
+            
+            recordButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const textarea = document.getElementById(targetId);
+                    const recordingIndicator = document.getElementById(`recording-${targetId}`);
+                    
+                    if (!checkSpeechRecognitionSupport()) {
+                        alert('Tu navegador no soporta la función de grabar voz. Por favor, escribe tus respuestas manualmente o intenta con otro navegador como Chrome.');
+                        return;
+                    }
+                    
+                    if (isRecording) {
+                        // Detener grabación
+                        if (recognition) {
+                            recognition.stop();
+                        }
+                        isRecording = false;
+                        recordingIndicator.style.display = 'none';
+                        this.innerHTML = '<i class="fas fa-microphone"></i> Grabar';
+                        
+                    } else {
+                        // Iniciar grabación
+                        if (!recognition) {
+                            recognition = initSpeechRecognition();
+                            
+                            recognition.onresult = function(event) {
+                                const transcript = event.results[event.results.length - 1][0].transcript;
+                                if (currentTextarea) {
+                                    // Añadir línea en blanco si ya hay contenido
+                                    if (currentTextarea.value.trim().length > 0) {
+                                        currentTextarea.value += '\n\n';
+                                    }
+                                    currentTextarea.value += transcript;
+                                    saveProgress(); // Guardar después de transcribir
+                                }
+                            };
+                            
+                            recognition.onerror = function(event) {
+                                console.error('Error de reconocimiento de voz:', event.error);
+                                if (isRecording) {
+                                    stopRecording();
+                                }
+                            };
+                        }
+                        
+                        try {
+                            recognition.start();
+                            isRecording = true;
+                            currentTextarea = textarea;
+                            recordingIndicator.style.display = 'inline';
+                            this.innerHTML = '<i class="fas fa-stop-circle"></i> Detener';
+                        } catch (error) {
+                            console.error('Error al iniciar el reconocimiento de voz:', error);
+                            alert('No se pudo iniciar la grabación. Inténtalo de nuevo.');
+                        }
+                    }
+                });
+            });
+            
+            function stopRecording() {
+                if (recognition) {
+                    recognition.stop();
+                }
+                isRecording = false;
+                const recordingIndicators = document.querySelectorAll('.recording-indicator');
+                recordingIndicators.forEach(indicator => {
+                    indicator.style.display = 'none';
+                });
+                
+                const recordButtons = document.querySelectorAll('.record-btn');
+                recordButtons.forEach(button => {
+                    button.innerHTML = '<i class="fas fa-microphone"></i> Grabar';
+                });
+            }
+            
+            // ========== FUNCIONES DE GUARDADO AUTOMÁTICO ==========
+            // Obtener todas las áreas de texto
+            const allTextareas = document.querySelectorAll('textarea');
+            
+            // Configurar el evento de entrada con debounce para el guardado automático
+            let saveTimeout;
+            
+            allTextareas.forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    clearTimeout(saveTimeout);
+                    saveTimeout = setTimeout(saveProgress, 1000); // 1 segundo de debounce
+                });
+            });
+            
+            // Función para guardar el progreso
+            function saveProgress() {
+                const saveData = {};
+                
+                allTextareas.forEach(textarea => {
+                    saveData[textarea.id] = textarea.value;
+                });
+                
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData));
+                showSaveIndicator();
+            }
+            
+            // Función para mostrar el indicador de guardado
+            function showSaveIndicator() {
+                const saveIndicator = document.getElementById('saveIndicator');
+                saveIndicator.style.opacity = '1';
+                
+                setTimeout(() => {
+                    saveIndicator.style.opacity = '0';
+                }, 2000);
+            }
+            
+            // Función para cargar el progreso guardado
+            function loadProgress() {
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    
+                    for (const id in data) {
+                        const textarea = document.getElementById(id);
+                        if (textarea) {
+                            textarea.value = data[id];
+                        }
+                    }
+                }
+            }
+            
+            // Cargar progreso guardado al iniciar
+            loadProgress();
+            
+            // ========== ANÁLISIS DE PALABRAS CLAVE ==========
+            document.getElementById('analyzeKeywordsBtn').addEventListener('click', function() {
+                analyzeKeywords();
+            });
+            
+            function analyzeKeywords() {
+                // Recopilar texto de las Fases 1 y 2
+                let allText = '';
+                
+                // Fase 1
+                for (let i = 1; i <= 8; i++) {
+                    const textarea = document.getElementById(`q1_${i}`);
+                    if (textarea && textarea.value) {
+                        allText += ' ' + textarea.value;
+                    }
+                }
+                
+                // Fase 2
+                for (let i = 1; i <= 6; i++) {
+                    const textarea = document.getElementById(`q2_${i}`);
+                    if (textarea && textarea.value) {
+                        allText += ' ' + textarea.value;
+                    }
+                }
+                
+                if (allText.trim() === '') {
+                    alert('No hay suficiente texto para analizar. Por favor, responde algunas preguntas primero.');
+                    return;
+                }
+                
+                // Tokenizar y contar frecuencias
+                const words = allText.toLowerCase()
+                    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+                    .split(/\s+/);
+                
+                // Lista de palabras vacías en español
+                const stopWords = [
+                    'a', 'al', 'algo', 'algunas', 'algunos', 'ante', 'antes', 'como', 'con', 'contra',
+                    'cual', 'cuando', 'de', 'del', 'desde', 'donde', 'durante', 'e', 'el', 'ella',
+                    'ellas', 'ellos', 'en', 'entre', 'era', 'erais', 'eran', 'eras', 'eres', 'es',
+                    'esa', 'esas', 'ese', 'eso', 'esos', 'esta', 'estaba', 'estabais', 'estaban',
+                    'estabas', 'estad', 'estada', 'estadas', 'estado', 'estados', 'estamos', 'estando',
+                    'estar', 'estaremos', 'estará', 'estarán', 'estarás', 'estaré', 'estaréis',
+                    'estaría', 'estaríais', 'estaríamos', 'estarían', 'estarías', 'estas', 'este',
+                    'estemos', 'esto', 'estos', 'estoy', 'estuve', 'estuviera', 'estuvierais',
+                    'estuvieran', 'estuvieras', 'estuvieron', 'estuviese', 'estuvieseis', 'estuviesen',
+                    'estuvieses', 'estuvimos', 'estuviste', 'estuvisteis', 'estuviéramos',
+                    'estuviésemos', 'estuvo', 'está', 'estábamos', 'estáis', 'están', 'estás', 'esté',
+                    'estéis', 'estén', 'estés', 'fue', 'fuera', 'fuerais', 'fueran', 'fueras',
+                    'fueron', 'fuese', 'fueseis', 'fuesen', 'fueses', 'fui', 'fuimos', 'fuiste',
+                    'fuisteis', 'fuéramos', 'fuésemos', 'ha', 'habida', 'habidas', 'habido', 'habidos',
+                    'habiendo', 'habremos', 'habrá', 'habrán', 'habrás', 'habré', 'habréis', 'habría',
+                    'habríais', 'habríamos', 'habrían', 'habrías', 'habéis', 'había', 'habíais',
+                    'habíamos', 'habían', 'habías', 'han', 'has', 'hasta', 'hay', 'haya', 'hayamos',
+                    'hayan', 'hayas', 'hayáis', 'he', 'hemos', 'hube', 'hubiera', 'hubierais',
+                    'hubieran', 'hubieras', 'hubieron', 'hubiese', 'hubieseis', 'hubiesen', 'hubieses',
+                    'hubimos', 'hubiste', 'hubisteis', 'hubiéramos', 'hubiésemos', 'hubo', 'la', 'las',
+                    'le', 'les', 'lo', 'los', 'me', 'mi', 'mis', 'mucho', 'muchos', 'muy', 'más',
+                    'mí', 'mía', 'mías', 'mío', 'míos', 'nada', 'ni', 'no', 'nos', 'nosotras',
+                    'nosotros', 'nuestra', 'nuestras', 'nuestro', 'nuestros', 'o', 'os', 'otra',
+                    'otras', 'otro', 'otros', 'para', 'pero', 'poco', 'por', 'porque', 'que', 'quien',
+                    'quienes', 'qué', 'se', 'sea', 'seamos', 'sean', 'seas', 'seremos', 'será',
+                    'serán', 'serás', 'seré', 'seréis', 'sería', 'seríais', 'seríamos', 'serían',
+                    'serías', 'seáis', 'si', 'sido', 'siendo', 'sin', 'sobre', 'sois', 'somos', 'son',
+                    'soy', 'su', 'sus', 'suya', 'suyas', 'suyo', 'suyos', 'sí', 'también', 'tanto',
+                    'te', 'tendremos', 'tendrá', 'tendrán', 'tendrás', 'tendré', 'tendréis', 'tendría',
+                    'tendríais', 'tendríamos', 'tendrían', 'tendrías', 'tened', 'tenemos', 'tenga',
+                    'tengamos', 'tengan', 'tengas', 'tengo', 'tengáis', 'tenida', 'tenidas', 'tenido',
+                    'tenidos', 'teniendo', 'tenéis', 'tenía', 'teníais', 'teníamos', 'tenían',
+                    'tenías', 'ti', 'tiene', 'tienen', 'tienes', 'todo', 'todos', 'tu', 'tus', 'tuve',
+                    'tuviera', 'tuvierais', 'tuvieran', 'tuvieras', 'tuvieron', 'tuviese',
+                    'tuvieseis', 'tuviesen', 'tuvieses', 'tuvimos', 'tuviste', 'tuvisteis',
+                    'tuviéramos', 'tuviésemos', 'tuvo', 'tuya', 'tuyas', 'tuyo', 'tuyos', 'tú', 'un',
+                    'una', 'uno', 'unos', 'vosotras', 'vosotros', 'vuestra', 'vuestras', 'vuestro',
+                    'vuestros', 'y', 'ya', 'yo', 'él', 'éramos'
+                ];
+                
+                // Filtrar stopwords y palabras cortas
+                const filteredWords = words.filter(word => {
+                    return word.length > 3 && !stopWords.includes(word);
+                });
+                
+                // Contar frecuencias
+                const wordCounts = {};
+                filteredWords.forEach(word => {
+                    wordCounts[word] = (wordCounts[word] || 0) + 1;
+                });
+                
+                // Ordenar por frecuencia
+                const sortedWords = Object.keys(wordCounts).sort((a, b) => {
+                    return wordCounts[b] - wordCounts[a];
+                });
+                
+                // Mostrar las 12 palabras más frecuentes (o menos si no hay suficientes)
+                const topWords = sortedWords.slice(0, 12);
+                
+                const resultsDiv = document.getElementById('analysisResults');
+                
+                if (topWords.length === 0) {
+                    resultsDiv.innerHTML = '<p>No se pudieron identificar palabras clave significativas. Intenta responder con más detalle.</p>';
+                } else {
+                    resultsDiv.innerHTML = '<h4 class="font-semibold mb-3">Palabras clave identificadas:</h4><div id="keywordTags"></div>';
+                    
+                    const keywordTags = document.getElementById('keywordTags');
+                    topWords.forEach(word => {
+                        const count = wordCounts[word];
+                        const tag = document.createElement('span');
+                        tag.className = 'keyword-tag';
+                        tag.textContent = `${word} (${count})`;
+                        keywordTags.appendChild(tag);
+                    });
+                }
+                
+                resultsDiv.classList.remove('hidden');
+            }
+            
+            // ========== EXPORTACIÓN PARA IA ==========
+            document.getElementById('exportForAIBtn').addEventListener('click', function() {
+                exportForAI();
+            });
+            
+            function exportForAI() {
+                // Recopilar todas las respuestas
+                let exportText = "# GUÍA INTERACTIVA: DESCUBRE TU ELEMENTO\n\n";
+                exportText += "## FASE 1: REFLEXIÓN SOBRE EL PASADO Y EL PRESENTE\n\n";
+                
+                // Fase 1 - Recuerdos de la Infancia
+                exportText += "### Recuerdos de la Infancia\n\n";
+                exportText += "1. ¿Qué actividades disfrutabas tanto de niño/a que perdías la noción del tiempo?\n";
+                exportText += `${document.getElementById('q1_1').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué habilidades o destrezas te destacaban entre tus compañeros cuando eras niño/a?\n";
+                exportText += `${document.getElementById('q1_2').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "3. ¿Qué sueños o aspiraciones tenías en tu infancia sobre lo que querías ser o hacer?\n";
+                exportText += `${document.getElementById('q1_3').value || 'Sin respuesta'}\n\n`;
+                
+                // Fase 1 - Experiencias de Fluidez
+                exportText += "### Experiencias de Fluidez\n\n";
+                exportText += "1. ¿En qué actividades o tareas actuales pierdes la noción del tiempo cuando las realizas?\n";
+                exportText += `${document.getElementById('q1_4').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué actividades te producen una sensación de satisfacción profunda al realizarlas?\n";
+                exportText += `${document.getElementById('q1_5').value || 'Sin respuesta'}\n\n`;
+                
+                // Fase 1 - Fortalezas y Debilidades
+                exportText += "### Fortalezas y Debilidades\n\n";
+                exportText += "1. ¿Qué habilidades o talentos te han reconocido otras personas?\n";
+                exportText += `${document.getElementById('q1_6').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué tareas o actividades realizas con facilidad mientras que otros parecen esforzarse con ellas?\n";
+                exportText += `${document.getElementById('q1_7').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "3. ¿En qué áreas sientes que tienes limitaciones o dificultades?\n";
+                exportText += `${document.getElementById('q1_8').value || 'Sin respuesta'}\n\n`;
+                
+                // Fase 2
+                exportText += "## FASE 2: EXPLORACIÓN Y APERTURA A NUEVAS POSIBILIDADES\n\n";
+                
+                // Fase 2 - Intereses y Curiosidades
+                exportText += "### Intereses y Curiosidades\n\n";
+                exportText += "1. ¿Qué temas o actividades te generan verdadera curiosidad?\n";
+                exportText += `${document.getElementById('q2_1').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué contenidos (libros, videos, podcasts) consumes en tu tiempo libre?\n";
+                exportText += `${document.getElementById('q2_2').value || 'Sin respuesta'}\n\n`;
+                
+                // Fase 2 - Valores y Propósito
+                exportText += "### Valores y Propósito\n\n";
+                exportText += "1. ¿Qué valores son fundamentales en tu vida?\n";
+                exportText += `${document.getElementById('q2_3').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué tipo de impacto te gustaría generar en tu entorno o en el mundo?\n";
+                exportText += `${document.getElementById('q2_4').value || 'Sin respuesta'}\n\n`;
+                
+                // Fase 2 - Exploración de Posibilidades
+                exportText += "### Exploración de Posibilidades\n\n";
+                exportText += "1. ¿Qué profesiones, carreras o actividades has considerado que podrían alinearse con tus talentos y pasiones?\n";
+                exportText += `${document.getElementById('q2_5').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué personas admiras y por qué? ¿Qué aspectos de sus carreras o vidas te resultan atractivos?\n";
+                exportText += `${document.getElementById('q2_6').value || 'Sin respuesta'}\n\n`;
+                
+                // Fase 3
+                exportText += "## FASE 3: PLANIFICACIÓN Y ACCIÓN\n\n";
+                
+                // Fase 3 - Metas y Objetivos
+                exportText += "### Metas y Objetivos\n\n";
+                exportText += "1. ¿Qué metas a corto plazo (3-6 meses) podrías establecer para explorar tu \"elemento\"?\n";
+                exportText += `${document.getElementById('q3_1').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué objetivos a mediano plazo (1-2 años) te gustaría alcanzar en relación con tu desarrollo personal o profesional?\n";
+                exportText += `${document.getElementById('q3_2').value || 'Sin respuesta'}\n\n`;
+                
+                // Fase 3 - Plan de Acción
+                exportText += "### Plan de Acción\n\n";
+                exportText += "1. ¿Qué recursos (cursos, libros, mentores, herramientas) necesitas para avanzar hacia tus metas?\n";
+                exportText += `${document.getElementById('q3_3').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "2. ¿Qué obstáculos prevés y cómo planeas superarlos?\n";
+                exportText += `${document.getElementById('q3_4').value || 'Sin respuesta'}\n\n`;
+                
+                exportText += "3. ¿Cómo medirás tu progreso hacia tus metas?\n";
+                exportText += `${document.getElementById('q3_5').value || 'Sin respuesta'}\n\n`;
+                
+                // Síntesis personal
+                exportText += "## MI SÍNTESIS DEL \"ELEMENTO\"\n\n";
+                exportText += `${document.getElementById('sintesis').value || 'Sin síntesis personal'}\n\n`;
+                
+                // Añadir análisis de palabras clave si está disponible
+                const analysisResults = document.getElementById('analysisResults');
+                if (!analysisResults.classList.contains('hidden')) {
+                    exportText += "## ANÁLISIS DE PALABRAS CLAVE\n\n";
+                    
+                    const keywordTags = document.querySelectorAll('.keyword-tag');
+                    if (keywordTags.length > 0) {
+                        exportText += "Palabras clave identificadas en mis respuestas:\n";
+                        keywordTags.forEach(tag => {
+                            exportText += `- ${tag.textContent}\n`;
+                        });
+                    } else {
+                        exportText += "No se identificaron palabras clave significativas.\n";
+                    }
+                }
+                
+                // Mostrar el área de exportación
+                const exportArea = document.getElementById('exportArea');
+                const exportTextArea = document.getElementById('exportTextArea');
+                
+                exportTextArea.value = exportText;
+                exportArea.classList.remove('hidden');
+                
+                // Intentar copiar al portapapeles automáticamente
+                try {
+                    navigator.clipboard.writeText(exportText)
+                        .then(() => {
+                            alert('El texto ha sido copiado al portapapeles. Ahora puedes pegarlo en el chat con la IA.');
+                        })
+                        .catch(err => {
+                            console.error('No se pudo copiar automáticamente:', err);
+                            // Si falla, el usuario aún puede copiar manualmente del textarea
+                        });
+                } catch (error) {
+                    console.error('Error al intentar copiar al portapapeles:', error);
+                }
+            }
+            
+            // Botón de copia manual
+            document.getElementById('copyExportBtn').addEventListener('click', function() {
+                const exportTextArea = document.getElementById('exportTextArea');
+                exportTextArea.select();
+                
+                try {
+                    navigator.clipboard.writeText(exportTextArea.value)
+                        .then(() => {
+                            alert('Texto copiado al portapapeles');
+                        })
+                        .catch(err => {
+                            console.error('Error al copiar:', err);
+                            document.execCommand('copy'); // Fallback para navegadores más antiguos
+                        });
+                } catch (error) {
+                    console.error('Error al intentar copiar:', error);
+                    try {
+                        document.execCommand('copy'); // Fallback
+                        alert('Texto copiado al portapapeles');
+                    } catch (e) {
+                        alert('No se pudo copiar automáticamente. Por favor, selecciona el texto y usa Ctrl+C.');
+                    }
+                }
+            });
+            
+            // ========== LIMPIAR TODAS LAS RESPUESTAS ==========
+            document.getElementById('clearAllBtn').addEventListener('click', function() {
+                if (confirm('¿Estás seguro de que quieres borrar todas tus respuestas? Esta acción borrará también el progreso guardado en este navegador y NO se puede deshacer.')) {
+                    // Limpiar todas las áreas de texto
+                    allTextareas.forEach(textarea => {
+                        textarea.value = '';
+                    });
+                    
+                    // Limpiar localStorage
+                    localStorage.removeItem(STORAGE_KEY);
+                    
+                    // Ocultar resultados de análisis y exportación
+                    document.getElementById('analysisResults').classList.add('hidden');
+                    document.getElementById('exportArea').classList.add('hidden');
+                    
+                    alert('Todas las respuestas han sido borradas correctamente.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
