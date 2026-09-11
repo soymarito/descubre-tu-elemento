@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Maestra de Negocio & Onboarding con Voz | Coach Juan Daniel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b1120; }
+        .card-blur {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+        }
+        
+        /* Animación idéntica a Descubre Tu Propósito */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .recording-active {
+            animation: pulse-ring 1.8s infinite cubic-bezier(0.45, 0, 0.55, 1);
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+        }
+
+        .wave-bar { animation: wave 1.2s ease-in-out infinite; }
+        .wave-bar:nth-child(2) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes wave {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
+
+        /* Toast notifications container */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+
+    <div id="toast-container"></div>
+
+    <div class="max-w-3xl mx-auto">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-3">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Araí Digital • Onboarding Exclusivo
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Ficha Maestra de Negocio & Asistente IA
+            </h1>
+            <p class="mt-2 text-sm text-slate-400 max-w-xl mx-auto">
+                ¡Hola Juan Daniel! Podés completar este formulario <strong>escribiendo o usando el micrófono 🎙️ para hablar</strong> en cualquier campo. El sistema transcribe tu voz automáticamente y podés editar lo que quieras.
+            </p>
+            
+            <!-- Banner Dictado por Voz Activo -->
+            <div class="mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 max-w-lg mx-auto flex items-center justify-center gap-2.5 text-xs text-emerald-300">
+                <i class="fa-solid fa-microphone-lines text-emerald-400 text-base"></i>
+                <span><strong>Dictado por Voz Habilitado:</strong> Tocá el botón del micrófono, hablá con naturalidad y tocá de nuevo para pausar.</span>
+            </div>
+        </div>
+
+        <form id="onboardingForm" class="space-y-6">
+
+            <!-- SECCIÓN 1: IDENTIDAD Y PROPUESTA -->
+            <div class="card-blur rounded-2xl p-6 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-white flex items-center gap-2 pb-3 border-b border-slate-800">
+                    <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">1</span>
+                    Identidad de Marca & Propuesta de Valor
+                </h2>
+                
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre oficial de tu marca:</label>
+                    <input type="text" id="nombre_marca" value="Coach Juan Daniel — Mentoría & Propósito" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">Tu Propuesta de Valor en 1 frase (¿A quién ayudas y qué logran contigo?):</label>
+                        <button type="button" class="btn-mic text-[11px] text-slate-300 hover:text-white px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 border border-slate-700 transition-all" data-target="propuesta_valor">
+                            <i class="fa-solid fa-microphone text-emerald-400"></i> <span>Dictar por voz</span>
+                        </button>
+                    </div>
+                    <textarea id="propuesta_valor" rows="2" placeholder="Ej: Acompaño a emprendedores y profesionales a desbloquear su potencial, reprogramar creencias limitantes y alinear su propósito de vida..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold mt-1" id="recording-propuesta_valor">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Escuchando... hablá con naturalidad</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Instagram oficial:</label>
+                        <input type="text" id="instagram" value="@coachjuandaniel" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Enlace de agenda (Calendly / Meet):</label>
+                        <input type="text" id="link_agenda" placeholder="Ej: calendly.com/coach-juandaniel o coordinar por chat" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: SERVICIOS Y ACOMPAÑAMIENTOS -->
+            <div class="card-blur rounded-2xl p-6 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-white flex items-center gap-2 pb-3 border-b border-slate-800">
+                    <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs">2</span>
+                    Servicios: 1 a 1, Grupales y Mentoría Intensiva
+                </h2>
+
+                <!-- 1 a 1 -->
+                <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-extrabold uppercase text-amber-400 tracking-wider">A) Sesión Individual 1 a 1</span>
+                        <button type="button" class="btn-mic text-[10px] text-slate-300 hover:text-white px-2 py-0.5 bg-slate-800 rounded flex items-center gap-1 border border-slate-700" data-target="precio_sesion">
+                            <i class="fa-solid fa-microphone text-amber-400"></i> <span>Dictar</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="nombre_sesion" placeholder="Nombre: Ej. Sesión de Claridad 1-a-1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                        <input type="text" id="precio_sesion" placeholder="Duración y Valor: Ej. 60 min • $30 USD (o Bonificada)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                    </div>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold" id="recording-precio_sesion">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Grabando...</span>
+                    </div>
+                </div>
+
+                <!-- Grupal -->
+                <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-extrabold uppercase text-indigo-400 tracking-wider">B) Programa Grupal / Talleres</span>
+                        <button type="button" class="btn-mic text-[10px] text-slate-300 hover:text-white px-2 py-0.5 bg-slate-800 rounded flex items-center gap-1 border border-slate-700" data-target="precio_grupal">
+                            <i class="fa-solid fa-microphone text-indigo-400"></i> <span>Dictar</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="nombre_grupal" placeholder="Nombre: Ej. Taller Online Despierta Tu Propósito" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                        <input type="text" id="precio_grupal" placeholder="Duración y Valor: Ej. 4 semanas • $50 a $90 USD" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                    </div>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold" id="recording-precio_grupal">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Grabando...</span>
+                    </div>
+                </div>
+
+                <!-- Mentoría Premium -->
+                <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-extrabold uppercase text-emerald-400 tracking-wider">C) Mentoría Premium Intensiva (90 Días)</span>
+                        <button type="button" class="btn-mic text-[10px] text-slate-300 hover:text-white px-2 py-0.5 bg-slate-800 rounded flex items-center gap-1 border border-slate-700" data-target="precio_programa">
+                            <i class="fa-solid fa-microphone text-emerald-400"></i> <span>Dictar</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="nombre_programa" placeholder="Nombre: Ej. Mentoría Integral de Vida y Propósito" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                        <input type="text" id="precio_programa" placeholder="Inversión: Ej. $150 a $300 USD (Pago único o 2 cuotas)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                    </div>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold" id="recording-precio_programa">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Grabando...</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Métodos de pago que aceptas:</label>
+                    <input type="text" id="metodos_pago" placeholder="Ej: Mercado Pago, Transferencia Bancaria, PayPal, Cripto (USDT)..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: METODOLOGÍA -->
+            <div class="card-blur rounded-2xl p-6 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-white flex items-center gap-2 pb-3 border-b border-slate-800">
+                    <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs">3</span>
+                    Metodología y Enfoque de Coaching
+                </h2>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">¿Cuáles son los 3 o 4 pilares de tu método?:</label>
+                        <button type="button" class="btn-mic text-[11px] text-slate-300 hover:text-white px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 border border-slate-700 transition-all" data-target="pilares_metodo">
+                            <i class="fa-solid fa-microphone text-cyan-400"></i> <span>Dictar por voz</span>
+                        </button>
+                    </div>
+                    <textarea id="pilares_metodo" rows="2" placeholder="Ej: 1. Autodescubrimiento y talentos, 2. Reprogramación de creencias, 3. Estado de Flow, 4. Acción y hábitos sostenibles..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold mt-1" id="recording-pilares_metodo">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Escuchando...</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">¿Qué diferencia a tu mentoría de un curso o de la terapia?:</label>
+                        <button type="button" class="btn-mic text-[11px] text-slate-300 hover:text-white px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 border border-slate-700 transition-all" data-target="diferencial">
+                            <i class="fa-solid fa-microphone text-cyan-400"></i> <span>Dictar por voz</span>
+                        </button>
+                    </div>
+                    <textarea id="diferencial" rows="2" placeholder="Ej: No nos quedamos en teoría pasiva ni en el pasado; destrabamos el potencial en el presente y construimos resultados tangibles en 90 días..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold mt-1" id="recording-diferencial">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Escuchando...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: TONO DE VOZ -->
+            <div class="card-blur rounded-2xl p-6 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-white flex items-center gap-2 pb-3 border-b border-slate-800">
+                    <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs">4</span>
+                    Tono de Voz en WhatsApp
+                </h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Tratamiento a la persona:</label>
+                        <select id="tratamiento" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            <option value="De Vos (cercano / argentino)">De "Vos" (ej: ¿Qué querés lograr hoy?)</option>
+                            <option value="De Tú (neutro latinoamericano)">De "Tú" (ej: ¿Qué quieres lograr hoy?)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">¿Cómo te gusta saludar?:</label>
+                        <input type="text" id="saludo_inicial" placeholder="Ej: ¡Hola! Qué gusto saludarte / ¡Buenas! Un placer" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">Palabras clave o frases que siempre usas:</label>
+                        <button type="button" class="btn-mic text-[11px] text-slate-300 hover:text-white px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 border border-slate-700 transition-all" data-target="palabras_clave">
+                            <i class="fa-solid fa-microphone text-indigo-400"></i> <span>Dictar</span>
+                        </button>
+                    </div>
+                    <textarea id="palabras_clave" rows="2" placeholder="Ej: Mentalidad de abundancia, propósito, desbloquear potencial, vivir sin excusas..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold mt-1" id="recording-palabras_clave">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Grabando...</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">¿Qué cosas o tono NUNCA debería usar tu asistente?:</label>
+                        <button type="button" class="btn-mic text-[11px] text-slate-300 hover:text-white px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 border border-slate-700 transition-all" data-target="tono_evitar">
+                            <i class="fa-solid fa-microphone text-indigo-400"></i> <span>Dictar</span>
+                        </button>
+                    </div>
+                    <textarea id="tono_evitar" rows="2" placeholder="Ej: No sonar como vendedor agresivo, no prometer resultados mágicos sin esfuerzo, no usar tecnicismos aburridos..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold mt-1" id="recording-tono_evitar">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Grabando...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 5: FILTRO DE CURIOSOS -->
+            <div class="card-blur rounded-2xl p-6 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-white flex items-center gap-2 pb-3 border-b border-slate-800">
+                    <span class="w-6 h-6 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center text-xs">5</span>
+                    Reglas del Filtro de Curiosos
+                </h2>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">¿Qué tipo de persona NO quieres en tu agenda? (Descarte elegante):</label>
+                        <button type="button" class="btn-mic text-[11px] text-slate-300 hover:text-white px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 border border-slate-700 transition-all" data-target="perfil_no_deseado">
+                            <i class="fa-solid fa-microphone text-red-400"></i> <span>Dictar</span>
+                        </button>
+                    </div>
+                    <textarea id="perfil_no_deseado" rows="2" placeholder="Ej: Personas que buscan consejos gratis sin intención de comprometerse, quejosos crónicos, personas sin recursos para invertir en sí mismas..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold mt-1" id="recording-perfil_no_deseado">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Grabando...</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">¿Cuál es el perfil del alumno que SÍ te apasiona acompañar?:</label>
+                        <button type="button" class="btn-mic text-[11px] text-slate-300 hover:text-white px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-1.5 border border-slate-700 transition-all" data-target="perfil_deseado">
+                            <i class="fa-solid fa-microphone text-emerald-400"></i> <span>Dictar</span>
+                        </button>
+                    </div>
+                    <textarea id="perfil_deseado" rows="2" placeholder="Ej: Emprendedores y profesionales con ganas de crecer, personas decididas a invertir tiempo y dinero en su transformación en los próximos 90 días..." class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <div class="recording-indicator hidden items-center gap-2 text-xs text-red-400 font-semibold mt-1" id="recording-perfil_deseado">
+                        <span class="flex gap-1 items-end h-3"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                        <span>Grabando...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTONES DE ENVÍO -->
+            <div class="pt-4 flex flex-col sm:flex-row gap-3">
+                <button type="button" onclick="sendToWhatsapp()" class="flex-1 py-3.5 px-6 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-slate-950 font-extrabold text-sm shadow-xl flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Enviar Ficha a Mario por WhatsApp</span>
+                </button>
+                <button type="button" onclick="copySummary()" class="py-3.5 px-6 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>Copiar al Portapapeles</span>
+                </button>
+            </div>
+
+        </form>
+
+        <footer class="text-center text-xs text-slate-500 mt-10">
+            Tecnología desarrollada por <strong>Mario Espínola • Araí Digital</strong> para Coach Juan Daniel.
+        </footer>
+
+    </div>
+
+    <!-- Script de Dictado por Voz & Guardado (Motor Robusto Idéntico a Descubre Tu Propósito) -->
+    <script>
+        const STORAGE_KEY = 'ficha_onboarding_juan_daniel_autosave';
+        let recognition = null;
+        let isRecording = false;
+        let activeTargetInput = null;
+
+        // Toast Helper
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            let chosenBg = 'bg-slate-800 text-white border-slate-700';
+            let chosenIcon = 'fa-circle-info text-blue-400';
+
+            if (type === 'success') {
+                chosenBg = 'bg-emerald-950 text-emerald-100 border-emerald-800';
+                chosenIcon = 'fa-circle-check text-emerald-400';
+            } else if (type === 'error') {
+                chosenBg = 'bg-red-950 text-red-100 border-red-800';
+                chosenIcon = 'fa-circle-exclamation text-red-400';
+            }
+
+            toast.className = `toast ${chosenBg} px-4 py-3 rounded-xl shadow-2xl border text-xs font-medium flex items-center gap-2.5`;
+            toast.innerHTML = `<i class="fa-solid ${chosenIcon}"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // Web Speech API
+        function checkSpeechRecognitionSupport() {
+            return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+        }
+
+        function initSpeechRecognition() {
+            const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognitionAPI) return null;
+            
+            const instance = new SpeechRecognitionAPI();
+            instance.lang = 'es-ES';
+            instance.continuous = true;
+            instance.interimResults = false;
+
+            instance.onresult = (event) => {
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    }
+                }
+                if (activeTargetInput && finalTranscript) {
+                    if (activeTargetInput.value.trim().length > 0 && !activeTargetInput.value.endsWith(' ')) {
+                        activeTargetInput.value += ' ';
+                    }
+                    activeTargetInput.value += finalTranscript.trim();
+                    saveProgress();
+                }
+            };
+
+            instance.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                if (event.error === 'not-allowed') {
+                    showToast('Permiso de micrófono denegado en el navegador.', 'error', 4000);
+                }
+                stopRecordingUI();
+            };
+
+            instance.onend = () => {
+                if (isRecording) {
+                    stopRecordingUI();
+                }
+            };
+
+            return instance;
+        }
+
+        function stopRecordingUI() {
+            isRecording = false;
+            document.querySelectorAll('.btn-mic').forEach(btn => {
+                btn.classList.remove('recording-active');
+                const targetEl = document.getElementById(btn.dataset.target);
+                const hasText = targetEl && targetEl.value.trim().length > 0;
+                btn.innerHTML = hasText 
+                    ? '<i class="fa-solid fa-microphone text-emerald-400"></i> <span>Seguir dictando</span>'
+                    : '<i class="fa-solid fa-microphone text-emerald-400"></i> <span>Dictar por voz</span>';
+            });
+            document.querySelectorAll('.recording-indicator').forEach(ind => {
+                ind.classList.add('hidden');
+                ind.classList.remove('flex');
+            });
+        }
+
+        document.querySelectorAll('.btn-mic').forEach(button => {
+            button.addEventListener('click', function() {
+                if (!checkSpeechRecognitionSupport()) {
+                    showToast('Tu navegador no soporta dictado por voz. Usa Chrome, Edge o Safari.', 'error', 4000);
+                    return;
+                }
+                
+                const targetId = this.dataset.target;
+                const inputEl = document.getElementById(targetId);
+                const indicator = document.getElementById(`recording-${targetId}`);
+
+                if (isRecording) {
+                    if (activeTargetInput === inputEl) {
+                        try { recognition.stop(); } catch(e){}
+                        stopRecordingUI();
+                        showToast('Dictado pausado.', 'info', 1500);
+                        return;
+                    } else {
+                        try { recognition.stop(); } catch(e){}
+                        stopRecordingUI();
+                    }
+                }
+
+                activeTargetInput = inputEl;
+                recognition = initSpeechRecognition();
+                if (!recognition) return;
+
+                try {
+                    recognition.start();
+                    isRecording = true;
+                    this.classList.add('recording-active');
+                    this.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Pausar</span>';
+                    if (indicator) {
+                        indicator.classList.remove('hidden');
+                        indicator.classList.add('flex');
+                    }
+                    showToast('Micrófono activo... habla con naturalidad.', 'success', 2000);
+                } catch(err) {
+                    console.error('Error al iniciar micrófono:', err);
+                    stopRecordingUI();
+                }
+            });
+        });
+
+        // Autosave LocalStorage
+        const allInputs = document.querySelectorAll('input, textarea, select');
+        let autosaveTimer = null;
+
+        allInputs.forEach(el => {
+            el.addEventListener('input', () => {
+                clearTimeout(autosaveTimer);
+                autosaveTimer = setTimeout(() => {
+                    saveProgress();
+                }, 600);
+            });
+        });
+
+        function saveProgress() {
+            const data = {};
+            allInputs.forEach(el => {
+                if (el.id) data[el.id] = el.value;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadProgress() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    for (const id in data) {
+                        const el = document.getElementById(id);
+                        if (el && data[id]) el.value = data[id];
+                    }
+                } catch(e){}
+            }
+        }
+
+        // Resumen y Envíos
+        function generateSummary() {
+            const get = id => document.getElementById(id) ? document.getElementById(id).value.trim() : '';
+
+            return `📋 *FICHA MAESTRA DE NEGOCIO - COACH JUAN DANIEL*\n\n` +
+                   `🏢 *1. Identidad:*\n• Marca: ${get('nombre_marca')}\n• Propuesta de Valor: ${get('propuesta_valor')}\n• Instagram: ${get('instagram')}\n• Agenda: ${get('link_agenda')}\n\n` +
+                   `🛍️ *2. Servicios & Precios:*\n• 1 a 1: ${get('nombre_sesion')} (${get('precio_sesion')})\n• Grupal: ${get('nombre_grupal')} (${get('precio_grupal')})\n• Mentoría 90D: ${get('nombre_programa')} (${get('precio_programa')})\n• Pagos: ${get('metodos_pago')}\n\n` +
+                   `🧠 *3. Metodología:*\n• Pilares: ${get('pilares_metodo')}\n• Diferencial: ${get('diferencial')}\n\n` +
+                   `🗣️ *4. Tono de Voz:*\n• Tratamiento: ${get('tratamiento')}\n• Saludo: ${get('saludo_inicial')}\n• Palabras Clave: ${get('palabras_clave')}\n• Evitar: ${get('tono_evitar')}\n\n` +
+                   `🛡️ *5. Filtro de Curiosos:*\n• No Deseados: ${get('perfil_no_deseado')}\n• Cliente Ideal: ${get('perfil_deseado')}`;
+        }
+
+        function sendToWhatsapp() {
+            const text = generateSummary();
+            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        function copySummary() {
+            const text = generateSummary();
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('¡Ficha copiada al portapapeles con éxito!', 'success', 2500);
+            });
+        }
+
+        // Iniciar
+        loadProgress();
+    </script>
+</body>
+</html>
