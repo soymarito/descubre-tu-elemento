@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubre tu Propósito | Coach Juan Daniel — Mentoría & IA</title>
+    <!-- Meta tags SEO / Redes Sociales -->
+    <meta name="description" content="Descubre tu Propósito: confluencia entre tus talentos naturales, pasiones y vocación. Guía interactiva con dictado por voz y prompts optimizados para IA.">
+    <meta property="og:title" content="Descubre tu Propósito - Guía Interactiva con IA">
+    <meta property="og:description" content="Encuentra tu pasión y aptitudes innatas con el poder de la Inteligencia Artificial y la metodología de Transformación y Propósito de Coach Juan Daniel.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Play CDN v3) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        },
+                        coco: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome 6.5 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(145deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Accordion transition */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+        .accordion-content.active {
+            max-height: 8000px;
+            opacity: 1;
+        }
+
+        /* Textarea subtle animation */
+        textarea {
+            transition: all 0.25s ease;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background-color: #ffffff;
+        }
+
+        /* Mic pulse & audio wave animations */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .recording-active {
+            animation: pulse-ring 1.8s infinite cubic-bezier(0.45, 0, 0.55, 1);
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+        }
+
+        .wave-bar {
+            animation: wave 1.2s ease-in-out infinite;
+        }
+        .wave-bar:nth-child(2) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.1s; }
+
+        @keyframes wave {
+            0%, 100% { height: 6px; }
+            50% { height: 16px; }
+        }
+
+        /* Toast notifications container */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            .accordion-content { max-height: none !important; opacity: 1 !important; }
+            body { background: white !important; }
+            .glass-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+    <!-- Barra Superior de Demostración: Selector de Identidad Visual para Juan Daniel -->
+    <div id="demoIdentityBar" class="no-print bg-slate-950 text-white border-b border-slate-800 py-2 px-4 sticky top-1.5 z-40 shadow-xl backdrop-blur-md bg-opacity-95">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> MARCA PERSONAL EN VIVO
+                </span>
+                <span class="font-medium text-slate-300 hidden sm:inline">Concepto de Logo:</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="switchLogo(1)" id="btnLogo1" class="logo-btn px-3 py-1 rounded-full bg-amber-500 text-slate-950 font-bold shadow transition-all flex items-center gap-1.5">
+                    <span>1. Vector Ascenso (Oro/Navy)</span>
+                </button>
+                <button type="button" onclick="switchLogo(2)" id="btnLogo2" class="logo-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition-all flex items-center gap-1.5">
+                    <span>2. Despertar Solar (Zafiro)</span>
+                </button>
+                <button type="button" onclick="switchLogo(3)" id="btnLogo3" class="logo-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition-all flex items-center gap-1.5">
+                    <span>3. Brújula Esmeralda (Teal)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Barra de progreso superior fija -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-slate-200 z-50 no-print">
+        <div id="progressBar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-300 w-0"></div>
+    </div>
+
+    <!-- Contenedor Principal -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+        
+        <!-- Header con Switch de Branding (Co-branding Coach Coco) -->
+        <header class="mb-8 text-center relative">
+            <!-- Logo Central Dinámico -->
+            <div class="mb-5 flex flex-col items-center justify-center">
+                <div class="relative p-2 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 shadow-xl border-2 border-slate-700 inline-block transition-transform hover:scale-105 duration-300">
+                    <img id="coachBrandLogo" src="assets/logo_opcion1.jpg" alt="Logo Coach Juan Daniel" class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover shadow-inner transition-all duration-300">
+                    <span id="logoBadgeText" class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider shadow whitespace-nowrap">Opción 1: Ascenso</span>
+                </div>
+                <div class="mt-4 flex items-center gap-2">
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-slate-500">Coach Juan Daniel</span>
+                    <span class="text-slate-300">•</span>
+                    <a href="https://www.instagram.com/coachjuandaniel" target="_blank" class="text-xs text-brand-600 hover:text-brand-700 font-semibold flex items-center gap-1">
+                        <i class="fa-brands fa-instagram"></i> @coachjuandaniel
+                    </a>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4 no-print">
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-100 text-brand-800 border border-brand-200">
+                        <i class="fa-solid fa-sparkles mr-1.5 text-brand-600"></i> Edición Inteligencia Artificial
+                    </span>
+                    <span id="progressBadge" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                        0% completado
+                    </span>
+                </div>
+
+                <!-- Toggle Coach Mode (Oculto para usuarios normales, activable por URL ?coach=juandaniel) -->
+                <button id="coachToggleBtn" class="hidden items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 transition-all shadow-sm">
+                    <i class="fa-solid fa-user-tie text-emerald-600"></i>
+                    <span id="coachToggleText">Modo Mentoría (Coach Juan Daniel)</span>
+                </button>
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-3">
+                Descubre tu <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-purple-600">Propósito</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-light leading-relaxed">
+                Guía interactiva para conectar tus <strong>talentos naturales</strong> con tus <strong>pasiones auténticas</strong>, potenciada con Inteligencia Artificial.
+            </p>
+
+            <!-- Banner Co-Branding Dinámico (Coach Juan Daniel) -->
+            <div id="coachBanner" class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-100/70 border border-emerald-300 shadow-sm text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden shadow-md flex-shrink-0 border-2 border-emerald-500 bg-slate-900">
+                        <img id="coachBannerThumb" src="assets/logo_opcion1.jpg" alt="JD Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base">Programa de Mentoría Estratégica & IA | Coach Juan Daniel</h3>
+                            <span class="bg-emerald-200 text-emerald-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wide">Sesión 1-a-1</span>
+                        </div>
+                        <p class="text-xs text-slate-600 font-light mt-0.5">
+                            Completa esta guía para llevar tus respuestas a nuestra sesión personalizada de coaching estratégico.
+                        </p>
+                    </div>
+                </div>
+                <a id="whatsappCoachLink" href="https://wa.me/?text=Hola%20Coach%20Juan%20Daniel!%20He%20completado%20mi%20gu%C3%ADa%20Descubre%20Tu%20Prop%C3%B3sito%20para%20la%20mentor%C3%ADa." target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs sm:text-sm font-extrabold rounded-xl shadow-lg hover:shadow-emerald-500/30 transition-all flex-shrink-0 transform hover:-translate-y-0.5">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Contactar por WhatsApp</span>
+                </a>
+            </div>
+
+<!-- Autoría & Metodología -->
+<div class="mt-4 flex flex-wrap items-center justify-center gap-2.5 text-xs text-slate-500 font-medium">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Edición Oficial Coach Juan Daniel
+                </span>
+                <span class="text-slate-300 hidden sm:inline">•</span>
+                <span>Inspirado en la metodología de <strong class="text-slate-700">Sir Ken Robinson</strong></span>
+                <span class="text-slate-300 hidden sm:inline">•</span>
+                <span class="text-brand-600 font-semibold">Tecnología Araí Digital</span>
+            </div>
+        </header>
+
+        <!-- Tarjeta de Instrucciones y Concepto -->
+        <div class="glass-card rounded-2xl p-6 sm:p-7 mb-8 border border-white/80">
+            <div class="flex items-start gap-4">
+                <div class="p-3 bg-brand-600 text-white rounded-xl shadow-md hidden sm:flex items-center justify-center flex-shrink-0 w-12 h-12">
+                    <i class="fa-solid fa-compass text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <span>¿Qué es "Tu Propósito"?</span>
+                    </h2>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed font-light mb-4">
+                        Inspirado en los principios de Sir Ken Robinson sobre el punto de confluencia entre aptitudes innatas y pasiones auténticas, <strong>Tu Propósito</strong> es la dirección vital y profesional donde tus mayores fortalezas se ponen al servicio de lo que te apasiona y de tu impacto en el mundo. Esta herramienta te guía a través de un proceso reflexivo y genera prompts listos para obtener un diagnóstico profundo con cualquier modelo de IA (ChatGPT, Claude, Gemini).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Steps Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-4 border-t border-slate-100 text-xs text-slate-700">
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-lg bg-brand-100 text-brand-700 font-bold flex items-center justify-center flex-shrink-0">1</span>
+                    <div>
+                        <strong class="font-semibold block text-slate-800">Reflexiona (Fases 1 y 2)</strong>
+                        <span class="text-slate-500 font-light">Escribe o usa el botón de voz <i class="fa-solid fa-microphone text-[10px] text-brand-600"></i> para responder.</span>
+                    </div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-lg bg-brand-100 text-brand-700 font-bold flex items-center justify-center flex-shrink-0">2</span>
+                    <div>
+                        <strong class="font-semibold block text-slate-800">Diagnóstico IA (Prompt 1)</strong>
+                        <span class="text-slate-500 font-light">Exporta y envía tus respuestas a tu IA para descubrir tus patrones.</span>
+                    </div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-lg bg-brand-100 text-brand-700 font-bold flex items-center justify-center flex-shrink-0">3</span>
+                    <div>
+                        <strong class="font-semibold block text-slate-800">Plan de Acción (Fase 3)</strong>
+                        <span class="text-slate-500 font-light">Define tus metas SMART y audita tu estrategia con el Prompt 2.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner de Ayuda Micrófono -->
+        <div class="mb-6 p-3.5 rounded-xl bg-indigo-50/60 border border-indigo-100 flex items-center justify-between text-xs text-indigo-950 no-print">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-microphone-lines text-brand-600 text-sm"></i>
+                <span><strong>¿Prefieres hablar en lugar de escribir?</strong> Usa el botón "Grabar" en cualquier pregunta. El sistema transcribe en tiempo real.</span>
+            </div>
+            <span class="hidden md:inline-block text-[11px] text-slate-400">Recomendado: Chrome / Edge / Safari</span>
+        </div>
+
+        <!-- ACORDEÓN DE FASES -->
+        <div class="space-y-4 mb-8">
+            
+            <!-- FASE 1 -->
+            <div class="accordion-item glass-card rounded-2xl overflow-hidden border border-slate-200 shadow-sm transition-all duration-300">
+                <button class="accordion-header w-full px-6 py-4 sm:py-5 text-left flex justify-between items-center bg-slate-50/70 hover:bg-slate-100/80 transition-colors focus:outline-none" data-accordion="fase1">
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-brand-100 text-brand-700 font-bold text-sm shadow-sm">I</span>
+                        <div>
+                            <span class="font-bold text-slate-900 text-base sm:text-lg block">Fase 1: Reflexión del Pasado y Presente</span>
+                            <span class="text-xs text-slate-500 font-light">Infancia, estado de flow, fortalezas y debilidades</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="badge-fase1" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-200/70 text-slate-600">0/8</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </div>
+                </button>
+                <div class="accordion-content bg-white" id="fase1">
+                    <div class="p-6 sm:p-8 space-y-8">
+                        
+                        <!-- Subsección 1 -->
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-shapes"></i> Recuerdos de la Infancia
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q1_1">
+                                    <label for="q1_1" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿Qué actividades disfrutabas tanto de niño/a que perdías la noción del tiempo?</label>
+                                    <textarea id="q1_1" rows="3" placeholder="Ej: Dibujar personajes, desarmar juguetes para ver cómo funcionaban, inventar historias..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_1">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_1">
+                                            <span class="flex gap-1 items-end h-4">
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                            </span>
+                                            <span>Grabando... (Habla con naturalidad)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q1_2">
+                                    <label for="q1_2" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué habilidades o destrezas te destacaban entre tus compañeros cuando eras niño/a?</label>
+                                    <textarea id="q1_2" rows="3" placeholder="Ej: Rapidez mental, liderazgo para armar juegos, empatía con quienes estaban solos, memoria..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_2">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_2">
+                                            <span class="flex gap-1 items-end h-4">
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                            </span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q1_3">
+                                    <label for="q1_3" class="block text-sm font-semibold text-slate-800 mb-2">3. ¿Qué sueños o aspiraciones tenías en tu infancia sobre lo que querías ser o hacer?</label>
+                                    <textarea id="q1_3" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_3">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_3">
+                                            <span class="flex gap-1 items-end h-4">
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                                <span class="w-1 bg-red-500 rounded-full wave-bar"></span>
+                                            </span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Subsección 2 -->
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-bolt"></i> Experiencias de Fluidez (Estado de Flow)
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q1_4">
+                                    <label for="q1_4" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿En qué actividades o tareas actuales pierdes la noción del tiempo cuando las realizas?</label>
+                                    <textarea id="q1_4" rows="3" placeholder="Ej: Analizar datos, dar mentorías, diseñar páginas web, escribir reflexiones, cocinar..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_4">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_4">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q1_5">
+                                    <label for="q1_5" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué actividades te producen una sensación de satisfacción profunda y energía al realizarlas?</label>
+                                    <textarea id="q1_5" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_5">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_5">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Subsección 3 -->
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-chart-simple"></i> Fortalezas y Debilidades
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q1_6">
+                                    <label for="q1_6" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿Qué habilidades o talentos te han reconocido otras personas a lo largo de tu vida?</label>
+                                    <textarea id="q1_6" rows="3" placeholder="Ej: Facilidad para comunicar ideas complejas, sentido estético, capacidad analítica, templanza..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_6">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_6">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q1_7">
+                                    <label for="q1_7" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué tareas realizas con notable facilidad mientras que a otros les cuesta esfuerzo?</label>
+                                    <textarea id="q1_7" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_7">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_7">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q1_8">
+                                    <label for="q1_8" class="block text-sm font-semibold text-slate-800 mb-2">3. ¿En qué áreas o actividades sientes que tienes limitaciones, fricción o te drenan energía?</label>
+                                    <textarea id="q1_8" rows="3" placeholder="Ej: Tareas administrativas repetitivas, llamadas en frío, desorganización..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q1_8">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q1_8">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- FASE 2 -->
+            <div class="accordion-item glass-card rounded-2xl overflow-hidden border border-slate-200 shadow-sm transition-all duration-300">
+                <button class="accordion-header w-full px-6 py-4 sm:py-5 text-left flex justify-between items-center bg-slate-50/70 hover:bg-slate-100/80 transition-colors focus:outline-none" data-accordion="fase2">
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-brand-100 text-brand-700 font-bold text-sm shadow-sm">II</span>
+                        <div>
+                            <span class="font-bold text-slate-900 text-base sm:text-lg block">Fase 2: Exploración y Apertura a Posibilidades</span>
+                            <span class="text-xs text-slate-500 font-light">Intereses, valores cardinales, modelos a seguir</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="badge-fase2" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-200/70 text-slate-600">0/6</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </div>
+                </button>
+                <div class="accordion-content bg-white" id="fase2">
+                    <div class="p-6 sm:p-8 space-y-8">
+                        
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-compass-drafting"></i> Intereses y Curiosidades
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q2_1">
+                                    <label for="q2_1" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿Qué temas, industrias o actividades te generan genuina curiosidad intelectual o creativa?</label>
+                                    <textarea id="q2_1" rows="3" placeholder="Ej: Inteligencia artificial aplicada a negocios, finanzas personales, psicología humana, diseño..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q2_1">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q2_1">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q2_2">
+                                    <label for="q2_2" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué contenidos (libros, canales de YouTube, podcasts, cuentas) consumes por pura voluntad en tu tiempo libre?</label>
+                                    <textarea id="q2_2" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q2_2">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q2_2">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-heart-pulse"></i> Valores y Propósito
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q2_3">
+                                    <label for="q2_3" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿Qué valores son fundamentales e innegociables en tu forma de vivir y trabajar?</label>
+                                    <textarea id="q2_3" rows="3" placeholder="Ej: Libertad de tiempo, honestidad radical, excelencia, familia, impacto positivo..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q2_3">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q2_3">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q2_4">
+                                    <label for="q2_4" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué tipo de huella o impacto te gustaría generar en las personas que te rodean?</label>
+                                    <textarea id="q2_4" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q2_4">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q2_4">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-lightbulb"></i> Exploración de Opciones
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q2_5">
+                                    <label for="q2_5" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿Qué profesiones, proyectos o modelos de negocio has considerado que sientes que encajan contigo?</label>
+                                    <textarea id="q2_5" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q2_5">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q2_5">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q2_6">
+                                    <label for="q2_6" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué personas, autores o mentores admiras y qué rasgos específicos de sus vidas o carreras te inspiran?</label>
+                                    <textarea id="q2_6" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q2_6">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q2_6">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- FASE 3 -->
+            <div class="accordion-item glass-card rounded-2xl overflow-hidden border border-slate-200 shadow-sm transition-all duration-300">
+                <button class="accordion-header w-full px-6 py-4 sm:py-5 text-left flex justify-between items-center bg-slate-50/70 hover:bg-slate-100/80 transition-colors focus:outline-none" data-accordion="fase3">
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-brand-100 text-brand-700 font-bold text-sm shadow-sm">III</span>
+                        <div>
+                            <span class="font-bold text-slate-900 text-base sm:text-lg block">Fase 3: Planificación y Acción Estratégica</span>
+                            <span class="text-xs text-slate-500 font-light">Metas SMART, recursos, obstáculos y métricas de avance</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="badge-fase3" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-200/70 text-slate-600">0/5</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </div>
+                </button>
+                <div class="accordion-content bg-white" id="fase3">
+                    <div class="p-6 sm:p-8 space-y-8">
+                        
+                        <div class="bg-amber-50/80 border-l-4 border-amber-500 text-amber-900 rounded-r-2xl p-4 text-xs sm:text-sm leading-relaxed">
+                            <i class="fa-solid fa-triangle-exclamation mr-1.5 text-amber-600"></i>
+                            <strong>Recomendación:</strong> Te sugerimos completar esta fase después de haber generado el <strong>Prompt 1</strong>, pegarlo en la IA y leer su diagnóstico inicial para alimentar tus metas con esa retroalimentación.
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-bullseye"></i> Metas y Objetivos (SMART)
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q3_1">
+                                    <label for="q3_1" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿Qué metas a corto plazo (3 a 6 meses) podrías establecer para poner en acción tu "Propósito"?</label>
+                                    <textarea id="q3_1" rows="3" placeholder="Ej: Crear mi primer prototipo de servicio, ofrecer 3 sesiones beta, tomar una certificación..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q3_1">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q3_1">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q3_2">
+                                    <label for="q3_2" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué objetivos a mediano plazo (1 a 2 años) te gustaría alcanzar en tu desarrollo profesional o negocio?</label>
+                                    <textarea id="q3_2" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q3_2">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q3_2">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                <i class="fa-solid fa-list-check"></i> Recursos y Ejecución
+                            </h4>
+                            <div class="space-y-6">
+                                <div class="question-block" data-qid="q3_3">
+                                    <label for="q3_3" class="block text-sm font-semibold text-slate-800 mb-2">1. ¿Qué recursos clave (herramientas de IA, mentores, libros, cursos) necesitas para avanzar?</label>
+                                    <textarea id="q3_3" rows="3" placeholder="Escribe tus respuestas aquí..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q3_3">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q3_3">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q3_4">
+                                    <label for="q3_4" class="block text-sm font-semibold text-slate-800 mb-2">2. ¿Qué obstáculos o miedos prevés en el camino y qué estrategia específica aplicarás para superarlos?</label>
+                                    <textarea id="q3_4" rows="3" placeholder="Ej: Síndrome del impostor, falta de tiempo -> Bloquear 4 horas fijas semanales..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q3_4">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q3_4">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-block" data-qid="q3_5">
+                                    <label for="q3_5" class="block text-sm font-semibold text-slate-800 mb-2">3. ¿Cómo medirás de manera tangible tu progreso?</label>
+                                    <textarea id="q3_5" rows="3" placeholder="Ej: Cantidad de clientes atendidos, horas de práctica en flow por semana..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="q3_5">
+                                            <i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>
+                                        </button>
+                                        <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-q3_5">
+                                            <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                            <span>Grabando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- FASE DE ANÁLISIS & EXPORTACIÓN -->
+            <div class="accordion-item glass-card rounded-2xl overflow-hidden border border-brand-300 shadow-md transition-all duration-300">
+                <button class="accordion-header w-full px-6 py-4 sm:py-5 text-left flex justify-between items-center bg-brand-50/80 hover:bg-brand-100/70 transition-colors focus:outline-none" data-accordion="analisis">
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm shadow-md">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </span>
+                        <div>
+                            <span class="font-bold text-slate-900 text-base sm:text-lg block">Centro de Procesamiento & Exportación IA</span>
+                            <span class="text-xs text-brand-700 font-medium">Síntesis propia, diagnóstico y auditoría de planes</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-brand-600 transition-transform duration-300"></i>
+                </button>
+                <div class="accordion-content bg-white" id="analisis">
+                    <div class="p-6 sm:p-8 space-y-6">
+                        
+                        <div class="question-block" data-qid="sintesis">
+                            <label for="sintesis" class="block text-sm font-bold text-slate-800 mb-2">
+                                <i class="fa-solid fa-feather text-brand-600 mr-1.5"></i> Tu propia síntesis de tu "Propósito":
+                            </label>
+                            <p class="text-xs text-slate-500 font-light mb-2">A partir de tus reflexiones, ¿cómo definirías hoy tu Propósito en tus propias palabras?</p>
+                            <textarea id="sintesis" rows="4" placeholder="Ej: Mi elemento es liderar e inspirar a personas a través de la tecnología, combinando mi pensamiento estructurado con mi pasión por enseñar..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50"></textarea>
+                            <div class="flex items-center justify-between mt-2">
+                                <button type="button" class="btn-mic text-xs text-slate-700 font-medium px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center gap-1.5 transition-all border border-slate-200" data-target="sintesis">
+                                    <i class="fa-solid fa-microphone"></i> <span>Grabar Síntesis</span>
+                                </button>
+                                <div class="recording-indicator hidden items-center gap-2 text-xs text-red-600 font-semibold" id="recording-sintesis">
+                                    <span class="flex gap-1 items-end h-4"><span class="w-1 bg-red-500 rounded-full wave-bar"></span><span class="w-1 bg-red-500 rounded-full wave-bar"></span></span>
+                                    <span>Grabando...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-block" data-qid="aiReceivedAnalysis">
+                            <label for="aiReceivedAnalysis" class="block text-sm font-bold text-slate-800 mb-1">
+                                <i class="fa-solid fa-brain text-purple-600 mr-1.5"></i> Diagnóstico recibido de la IA (Opcional pero recomendado):
+                            </label>
+                            <p class="text-xs text-slate-500 font-light mb-2">Una vez que la IA analice tu <strong>Prompt 1</strong>, pega su respuesta aquí para auditar tus planes en el <strong>Prompt 2</strong>.</p>
+                            <textarea id="aiReceivedAnalysis" rows="5" placeholder="Pega aquí el resultado que te dio ChatGPT / Claude / Gemini..." class="w-full rounded-xl border border-slate-200 p-3.5 text-sm bg-slate-50/50 font-mono text-xs"></textarea>
+                        </div>
+
+                        <!-- Botones de Acción para Prompts -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-slate-100">
+                            
+                            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-50/80 to-slate-50 border border-indigo-100 flex flex-col justify-between shadow-sm">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-brand-600 text-white font-bold text-xs flex items-center justify-center">1</span>
+                                        <h5 class="text-sm font-bold text-slate-900">Diagnóstico Inicial de Talentos</h5>
+                                    </div>
+                                    <p class="text-xs text-slate-600 font-light mb-4 leading-relaxed">
+                                        Empaqueta tus respuestas de Fases 1 y 2 con un rol de Coach Vocacional de élite para descubrir patrones ocultos, aptitudes y sugerencias de carrera.
+                                    </p>
+                                </div>
+                                <button id="exportInitialAnalysisBtn" class="w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-bolt"></i> Generar Prompt 1 (Diagnóstico)
+                                </button>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-gradient-to-br from-purple-50/80 to-slate-50 border border-purple-100 flex flex-col justify-between shadow-sm">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center">2</span>
+                                        <h5 class="text-sm font-bold text-slate-900">Auditoría y Feedback de Planes</h5>
+                                    </div>
+                                    <p class="text-xs text-slate-600 font-light mb-4 leading-relaxed">
+                                        Evalúa la viabilidad de tus metas de Fase 3, detecta puntos ciegos y afina tu plan de acción con el rol de un Mentor Estratégico.
+                                    </p>
+                                </div>
+                                <button id="exportPlanFeedbackBtn" class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-crosshairs"></i> Generar Prompt 2 (Auditoría)
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- Panel de Salida de Prompt / Visualizador de Consola -->
+                        <div id="exportArea" class="hidden mt-8 pt-6 border-t border-slate-200">
+                            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                                    <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Prompt Listo para Copiar</span>
+                                </div>
+                                
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button id="copyExportBtn" class="text-xs font-bold px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
+                                        <i class="fa-solid fa-copy"></i> <span>Copiar al Portapapeles</span>
+                                    </button>
+                                    <button id="downloadTxtBtn" class="text-xs font-semibold px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl flex items-center gap-1.5 border border-slate-200 transition-all">
+                                        <i class="fa-solid fa-download"></i> <span>Descargar .TXT</span>
+                                    </button>
+                                    <button id="shareWhatsappBtn" class="text-xs font-semibold px-3 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-xl flex items-center gap-1.5 border border-emerald-300 transition-all">
+                                        <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <textarea id="exportTextArea" class="w-full h-80 rounded-2xl border border-slate-800 p-4 font-mono text-xs bg-slate-950 text-emerald-400 focus:ring-0 leading-relaxed shadow-inner" readonly></textarea>
+                            <p class="text-[11px] text-slate-500 font-light mt-2 text-center">
+                                💡 Tip: Puedes abrir <a href="https://chatgpt.com" target="_blank" class="text-brand-600 underline font-medium">ChatGPT</a>, <a href="https://gemini.google.com" target="_blank" class="text-brand-600 underline font-medium">Gemini</a> o <a href="https://claude.ai" target="_blank" class="text-brand-600 underline font-medium">Claude</a> y pegar este texto con <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-slate-700">Ctrl + V</kbd>.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Botones de Utilidad Inferiores -->
+        <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white/60 border border-slate-200/80 shadow-sm no-print">
+            <button id="clearAllBtn" class="text-xs text-red-600 hover:text-red-700 hover:bg-red-50 font-semibold px-4 py-2.5 rounded-xl border border-red-200 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-trash-can"></i> Reiniciar respuestas
+            </button>
+            <div class="flex items-center gap-2">
+                <button onclick="window.print()" class="text-xs text-slate-700 hover:bg-slate-100 font-medium px-4 py-2.5 rounded-xl border border-slate-200 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i> Imprimir / Guardar PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-slate-400 text-xs mt-12 pb-6 border-t border-slate-200/60 pt-6 font-light">
+            <p>© 2026 - Aplicación Web <strong>"Descubre tu Propósito"</strong> • Todos los derechos reservados.</p>
+            <p class="mt-1">Diseñado para procesos de auto-conocimiento y mentoría de alto rendimiento.</p>
+        </footer>
+
+    </div>
+
+    <!-- Contenedor Toast Flotante -->
+    <div id="toast-container" aria-live="polite"></div>
+
+    <!-- Plantillas de Prompts Ocultas -->
+    <div id="promptsReference" class="hidden">
+        <span id="prompt1-text-ref">Rol: Eres un coach experto en desarrollo personal y orientación vocacional de nivel mundial, con profunda maestría en ayudar a las personas a identificar sus talentos innatos, pasiones auténticas y propósito de vida, inspirándote en la metodología de "Descubre Tu Propósito" y alineación vital de Coach Juan Daniel. Tu objetivo es analizar exhaustivamente las siguientes reflexiones personales para descubrir y articular con claridad mi "Propósito de Vida y Carrera".
+
+Tarea:
+1. Análisis Detallado de Patrones y Conexiones:
+   - Lee cuidadosamente todas mis respuestas de la Fase 1 (Reflexión sobre el Pasado y Presente) y Fase 2 (Exploración y Apertura).
+   - Identifica temas recurrentes, palabras clave significativas, valores consistentemente mencionados y habilidades que emergen tanto de mis recuerdos infantiles como de mis experiencias actuales de fluidez.
+   - Busca contradicciones aparentes o tensiones que revelen miedos o deseos reprimidos.
+   - Conecta mis hilos conductores.
+
+2. Identificación de Talentos Naturales (Aptitudes Innatas):
+   - ¿Cuáles son mis 3 a 5 aptitudes o fortalezas más destacadas? Sé muy específico (ej: "comunicación empática", "pensamiento sintético de sistemas", "destreza creativa visual").
+
+3. Identificación de Pasiones Genuinas (Intereses que Energizan):
+   - Considerando dónde pierdo la noción del tiempo y qué me produce satisfacción profunda, ¿cuáles son mis 2 a 4 áreas de pasión auténtica?
+
+4. Definición Preliminar de mi "Elemento":
+   - Sintetiza en 2-3 frases potentes cuál es mi "Elemento": el punto de encuentro exacto entre mis talentos y mis pasiones.
+
+5. Sugerencia de Caminos Potenciales (3 a 5 opciones de impacto):
+   - Propón entre 3 y 5 roles, carreras, industrias o tipos de emprendimiento alineados con mi Propósito.
+   - Para cada uno, explica: Por qué encaja con mi perfil, qué evidencia de mis respuestas lo respalda y qué desafíos debo considerar.
+
+6. Preguntas Clave para Profundizar (1 o 2 preguntas):
+   - Preguntas estratégicas para aclarar cualquier punto ciego.
+
+A continuación, mis respuestas:</span>
+
+        <span id="prompt2-text-ref">Rol: Eres un mentor y estratega de negocios y desarrollo profesional de élite. Tu habilidad principal es auditar planes de acción, detectar puntos ciegos y transformar metas abstractas en sistemas de ejecución realistas, coherentes con el "Propósito" de la persona.
+
+Contexto previo:
+- Mis respuestas de autoconocimiento (Fases 1 y 2).
+- Mi propia síntesis y el diagnóstico inicial recibido de la IA.
+
+Tarea Principal: Análisis y Feedback de mis Planes de Acción (Fase 3)
+Evalúa mis metas a corto y mediano plazo, recursos, obstáculos y métricas de progreso considerando:
+
+1. Alineación con mi "Propósito":
+   - ¿Mis metas en la Fase 3 son verdaderamente coherentes con mis talentos y pasiones descritos previamente, o están condicionadas por mandatos externos?
+
+2. Viabilidad y Realismo (Criterios SMART):
+   - Evalúa si mis metas son Específicas, Medibles, Alcanzables, Relevantes y con Plazos definidos. ¿Son retadoras pero alcanzables?
+
+3. Solidez del Plan de Acción y Recursos:
+   - ¿Los recursos identificados son suficientes? ¿Qué otros recursos/herramientas apalancadas en IA debería sumar?
+   - ¿Qué obstáculos o riesgos estoy subestimando y cómo puedo blindarme proactivamente?
+
+4. Puntos Ciegos y Oportunidades No Consideradas:
+   - ¿Qué atajos o modelos de ejecución de alto impacto no estoy viendo?
+
+5. Recomendaciones Tácticas Directas (3 a 5 acciones inmediatas):
+   - Pasos concretos para ejecutar en los próximos 14 días.
+
+A continuación, mis datos completos y planes de acción:</span>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const STORAGE_KEY = 'descubreTuElemento_v4_5_pro';
+            const COACH_STORAGE_KEY = 'descubreTuElemento_coach_mode';
+
+            let recognition = null;
+            let isRecording = false;
+            let activeTargetTextarea = null;
+            let shouldKeepRecording = false;
+            let finalAccumulatedTranscript = '';
+
+            // 1. Toast Notification System
+            function showToast(message, type = 'info', duration = 3000) {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                
+                const bgMap = {
+                    success: 'bg-emerald-900 border-emerald-700 text-emerald-100',
+                    error: 'bg-red-900 border-red-700 text-red-100',
+                    info: 'bg-slate-900 border-slate-800 text-slate-100',
+                    brand: 'bg-brand-900 border-brand-700 text-brand-100'
+                };
+                const iconMap = {
+                    success: 'fa-circle-check text-emerald-400',
+                    error: 'fa-triangle-exclamation text-red-400',
+                    info: 'fa-circle-info text-sky-400',
+                    brand: 'fa-wand-magic-sparkles text-brand-400'
+                };
+
+                const chosenBg = bgMap[type] || bgMap.info;
+                const chosenIcon = iconMap[type] || iconMap.info;
+
+                toast.className = `toast ${chosenBg} px-4 py-3 rounded-xl shadow-2xl border text-xs sm:text-sm font-medium flex items-center gap-2.5`;
+                toast.innerHTML = `<i class="fa-solid ${chosenIcon}"></i> <span>${message}</span>`;
+                
+                container.appendChild(toast);
+                
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, duration);
+            }
+
+            // 2. Control de Acordeones
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const contentId = header.dataset.accordion;
+                    const content = document.getElementById(contentId);
+                    const isCurrentlyActive = content.classList.contains('active');
+                    
+                    // Cierra otros acordeones si se desea comportamiento único
+                    document.querySelectorAll('.accordion-content.active').forEach(activeContent => {
+                        if (activeContent !== content) {
+                            activeContent.classList.remove('active');
+                            const parentHeader = activeContent.previousElementSibling;
+                            if (parentHeader) {
+                                const arrow = parentHeader.querySelector('.fa-chevron-down');
+                                if (arrow) arrow.style.transform = 'rotate(0deg)';
+                            }
+                        }
+                    });
+
+                    // Toggle del actual
+                    if (isCurrentlyActive) {
+                        content.classList.remove('active');
+                        header.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+                    } else {
+                        content.classList.add('active');
+                        header.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // 3. Web Speech API (Motor de Dictado por Voz Estable y Probado)
+            function checkSpeechRecognitionSupport() {
+                return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+            }
+
+            function initSpeechRecognition() {
+                const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognitionAPI) return null;
+                
+                const instance = new SpeechRecognitionAPI();
+                instance.lang = 'es-ES';
+                instance.continuous = true;
+                instance.interimResults = false;
+
+                instance.onresult = (event) => {
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript;
+                        }
+                    }
+                    if (activeTargetTextarea && finalTranscript) {
+                        if (activeTargetTextarea.value.trim().length > 0 && !activeTargetTextarea.value.endsWith(' ')) {
+                            activeTargetTextarea.value += ' ';
+                        }
+                        activeTargetTextarea.value += finalTranscript.trim();
+                        saveProgress();
+                        updateProgressCounters();
+                    }
+                };
+
+                instance.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    if (event.error === 'not-allowed') {
+                        showToast('Permiso de micrófono denegado.', 'error', 3000);
+                    } else if (event.error === 'no-speech') {
+                        // Silencio temporal
+                    }
+                    if (isRecording) {
+                        stopRecordingUI();
+                    }
+                };
+
+                instance.onend = () => {
+                    if (isRecording) {
+                        stopRecordingUI();
+                    }
+                };
+
+                return instance;
+            }
+
+            function stopRecordingUI() {
+                isRecording = false;
+                document.querySelectorAll('.btn-mic').forEach(btn => {
+                    btn.classList.remove('recording-active');
+                    const targetTa = document.getElementById(btn.dataset.target);
+                    const hasText = targetTa && targetTa.value.trim().length > 0;
+                    btn.innerHTML = hasText 
+                        ? '<i class="fa-solid fa-microphone"></i> <span>Continuar grabando</span>'
+                        : '<i class="fa-solid fa-microphone"></i> <span>Grabar respuesta</span>';
+                });
+                document.querySelectorAll('.recording-indicator').forEach(ind => {
+                    ind.classList.add('hidden');
+                    ind.classList.remove('flex');
+                });
+            }
+
+            document.querySelectorAll('.btn-mic').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (!checkSpeechRecognitionSupport()) {
+                        showToast('Tu navegador no soporta dictado por voz. Usa Chrome o Edge.', 'error', 4000);
+                        return;
+                    }
+                    
+                    const targetId = this.dataset.target;
+                    const textarea = document.getElementById(targetId);
+                    const indicator = document.getElementById(`recording-${targetId}`);
+
+                    if (isRecording) {
+                        if (recognition) {
+                            recognition.stop();
+                        }
+                        stopRecordingUI();
+                        showToast('Grabación pausada y guardada.', 'info', 1500);
+                    } else {
+                        activeTargetTextarea = textarea;
+                        recognition = initSpeechRecognition();
+                        
+                        if (!recognition) {
+                            showToast('No se pudo iniciar el micrófono.', 'error', 3000);
+                            return;
+                        }
+                        
+                        try {
+                            recognition.start();
+                            isRecording = true;
+                            this.classList.add('recording-active');
+                            this.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Pausar / Detener</span>';
+                            if (indicator) {
+                                indicator.classList.remove('hidden');
+                                indicator.classList.add('flex');
+                            }
+                            showToast('Escuchando... habla con naturalidad.', 'brand', 2000);
+                        } catch (err) {
+                            console.error('Error al iniciar micrófono:', err);
+                            stopRecordingUI();
+                        }
+                    }
+                });
+            });
+
+            // 4. Autosave & Contadores de Progreso
+            const allTextareas = document.querySelectorAll('textarea');
+            let autosaveTimer = null;
+
+            allTextareas.forEach(ta => {
+                ta.addEventListener('input', () => {
+                    clearTimeout(autosaveTimer);
+                    autosaveTimer = setTimeout(() => {
+                        saveProgress();
+                        updateProgressCounters();
+                        showToast('Progreso guardado automáticamente', 'success', 1500);
+                    }, 800);
+                });
+            });
+
+            function saveProgress() {
+                const data = {};
+                allTextareas.forEach(ta => {
+                    data[ta.id] = ta.value;
+                });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            }
+
+            function loadProgress() {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    try {
+                        const data = JSON.parse(raw);
+                        for (const id in data) {
+                            const el = document.getElementById(id);
+                            if (el) el.value = data[id];
+                        }
+                    } catch (e) {
+                        console.error('Error parseando localStorage', e);
+                    }
+                }
+                updateProgressCounters();
+                stopRecordingUI();
+            }
+
+            function updateProgressCounters() {
+                const f1 = ['q1_1', 'q1_2', 'q1_3', 'q1_4', 'q1_5', 'q1_6', 'q1_7', 'q1_8'];
+                const f2 = ['q2_1', 'q2_2', 'q2_3', 'q2_4', 'q2_5', 'q2_6'];
+                const f3 = ['q3_1', 'q3_2', 'q3_3', 'q3_4', 'q3_5'];
+
+                const countAnswered = (arr) => arr.filter(id => {
+                    const el = document.getElementById(id);
+                    return el && el.value.trim().length > 3;
+                }).length;
+
+                const c1 = countAnswered(f1);
+                const c2 = countAnswered(f2);
+                const c3 = countAnswered(f3);
+
+                const badgeF1 = document.getElementById('badge-fase1');
+                const badgeF2 = document.getElementById('badge-fase2');
+                const badgeF3 = document.getElementById('badge-fase3');
+
+                if (badgeF1) badgeF1.textContent = `${c1}/${f1.length}`;
+                if (badgeF2) badgeF2.textContent = `${c2}/${f2.length}`;
+                if (badgeF3) badgeF3.textContent = `${c3}/${f3.length}`;
+
+                const totalQuestions = f1.length + f2.length + f3.length;
+                const totalAnswered = c1 + c2 + c3;
+                const percentage = Math.round((totalAnswered / totalQuestions) * 100);
+
+                const progressBar = document.getElementById('progressBar');
+                const progressBadge = document.getElementById('progressBadge');
+
+                if (progressBar) progressBar.style.width = `${percentage}%`;
+                if (progressBadge) progressBadge.textContent = `${percentage}% completado`;
+            }
+
+            // 5. Módulo Coach Juan Daniel (Coco)
+            const coachToggleBtn = document.getElementById('coachToggleBtn');
+            const coachBanner = document.getElementById('coachBanner');
+            const coachToggleText = document.getElementById('coachToggleText');
+
+            function setCoachMode(enabled) {
+                if (enabled) {
+                    coachBanner.classList.remove('hidden');
+                } else {
+                    coachBanner.classList.add('hidden');
+                }
+            }
+
+            // Detección automática por enlace inteligente (ej: ?coach=juandaniel)
+            const urlParams = new URLSearchParams(window.location.search);
+            const coachParam = urlParams.get('coach');
+
+            if (coachParam && (coachParam.toLowerCase().includes('juan') || coachParam.toLowerCase().includes('coco') || coachParam === '1' || coachParam === 'true')) {
+                setCoachMode(true);
+            } else {
+                setCoachMode(false);
+            }
+
+            // 6. Exportación y Generación de Prompts
+            function getVal(id) {
+                const el = document.getElementById(id);
+                return el && el.value.trim() ? el.value.trim() : 'Sin respuesta.';
+            }
+
+            function buildCompiledAnswers(includePhase3 = false) {
+                let txt = "=== FASE 1: REFLEXIÓN DEL PASADO Y PRESENTE ===\n\n";
+                txt += "• 1. Actividades de niño/a donde perdía noción del tiempo:\n" + getVal('q1_1') + "\n\n";
+                txt += "• 2. Habilidades que destacaban de niño/a:\n" + getVal('q1_2') + "\n\n";
+                txt += "• 3. Sueños e ilusiones de lo que quería ser:\n" + getVal('q1_3') + "\n\n";
+                txt += "• 4. Tareas actuales donde pierde noción del tiempo (Flow):\n" + getVal('q1_4') + "\n\n";
+                txt += "• 5. Actividades que producen satisfacción profunda y energía:\n" + getVal('q1_5') + "\n\n";
+                txt += "• 6. Talentos reconocidos por otras personas:\n" + getVal('q1_6') + "\n\n";
+                txt += "• 7. Habilidades fáciles vs esfuerzo de otros:\n" + getVal('q1_7') + "\n\n";
+                txt += "• 8. Limitaciones o áreas que drenan energía:\n" + getVal('q1_8') + "\n\n";
+
+                txt += "=== FASE 2: EXPLORACIÓN Y APERTURA A POSIBILIDADES ===\n\n";
+                txt += "• 1. Temas/industrias de curiosidad genuina:\n" + getVal('q2_1') + "\n\n";
+                txt += "• 2. Contenidos (libros, videos, podcasts) consumidos libremente:\n" + getVal('q2_2') + "\n\n";
+                txt += "• 3. Valores fundamentales e innegociables:\n" + getVal('q2_3') + "\n\n";
+                txt += "• 4. Huella o impacto deseado en el entorno:\n" + getVal('q2_4') + "\n\n";
+                txt += "• 5. Profesiones/carreras/negocios considerados:\n" + getVal('q2_5') + "\n\n";
+                txt += "• 6. Personas admiradas y motivos de inspiración:\n" + getVal('q2_6') + "\n\n";
+
+                const sintesis = getVal('sintesis');
+                if (sintesis !== 'Sin respuesta.') {
+                    txt += "=== MI PROPIA SÍNTESIS DEL PROPÓSITO ===\n" + sintesis + "\n\n";
+                }
+
+                if (includePhase3) {
+                    const aiDiag = getVal('aiReceivedAnalysis');
+                    if (aiDiag !== 'Sin respuesta.') {
+                        txt += "=== DIAGNÓSTICO PREVIO RECIBIDO DE LA IA ===\n" + aiDiag + "\n\n";
+                    }
+
+                    txt += "=== FASE 3: PLANIFICACIÓN Y ACCIÓN ESTRATÉGICA ===\n\n";
+                    txt += "• 1. Metas a corto plazo (3-6 meses):\n" + getVal('q3_1') + "\n\n";
+                    txt += "• 2. Objetivos a mediano plazo (1-2 años):\n" + getVal('q3_2') + "\n\n";
+                    txt += "• 3. Recursos necesarios (herramientas IA, mentores):\n" + getVal('q3_3') + "\n\n";
+                    txt += "• 4. Obstáculos previstos y estrategias de superación:\n" + getVal('q3_4') + "\n\n";
+                    txt += "• 5. Métricas tangibles de progreso:\n" + getVal('q3_5') + "\n\n";
+                }
+
+                return txt;
+            }
+
+            function displayExportResult(text) {
+                const area = document.getElementById('exportArea');
+                const ta = document.getElementById('exportTextArea');
+                ta.value = text;
+                area.classList.remove('hidden');
+                area.scrollIntoView({ behavior: 'smooth' });
+
+                // Copiar automáticamente al portapapeles
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('¡Prompt copiado al portapapeles! Pégalo en tu IA favorita.', 'success', 3500);
+                }).catch(() => {
+                    showToast('Prompt generado. Haz clic en "Copiar al Portapapeles".', 'info', 3000);
+                });
+            }
+
+            document.getElementById('exportInitialAnalysisBtn').addEventListener('click', () => {
+                const prompt1 = document.getElementById('prompt1-text-ref').textContent;
+                const fullText = prompt1 + "\n\n" + buildCompiledAnswers(false);
+                displayExportResult(fullText);
+            });
+
+            document.getElementById('exportPlanFeedbackBtn').addEventListener('click', () => {
+                const prompt2 = document.getElementById('prompt2-text-ref').textContent;
+                const fullText = prompt2 + "\n\n" + buildCompiledAnswers(true);
+                displayExportResult(fullText);
+            });
+
+            document.getElementById('copyExportBtn').addEventListener('click', () => {
+                const ta = document.getElementById('exportTextArea');
+                if (!ta.value.trim()) return;
+                navigator.clipboard.writeText(ta.value).then(() => {
+                    showToast('Copiado al portapapeles con éxito.', 'success', 2000);
+                });
+            });
+
+            // Descargar TXT
+            document.getElementById('downloadTxtBtn').addEventListener('click', () => {
+                const text = document.getElementById('exportTextArea').value;
+                if (!text.trim()) {
+                    showToast('Primero genera un prompt para descargarlo.', 'info', 2500);
+                    return;
+                }
+                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Descubre-tu-Proposito-${new Date().toISOString().slice(0,10)}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('Archivo .TXT descargado.', 'success', 2000);
+            });
+
+            // Compartir por WhatsApp
+            document.getElementById('shareWhatsappBtn').addEventListener('click', () => {
+                const sintesis = getVal('sintesis');
+                const msg = encodeURIComponent(`¡Hola! He completado mi análisis en "Descubre Tu Propósito".\n\nMi Síntesis:\n"${sintesis}"\n\n¿Podemos coordinar nuestra sesión estratégica de mentoría?`);
+                window.open(`https://wa.me/?text=${msg}`, '_blank');
+            });
+
+            // Reiniciar respuestas
+            document.getElementById('clearAllBtn').addEventListener('click', () => {
+                if (confirm('¿Estás seguro de que deseas borrar todas tus respuestas? Esta acción reiniciará el test.')) {
+                    allTextareas.forEach(ta => ta.value = '');
+                    localStorage.removeItem(STORAGE_KEY);
+                    document.getElementById('exportArea').classList.add('hidden');
+                    updateProgressCounters();
+                    showToast('Respuestas reiniciadas.', 'info', 2000);
+                }
+            });
+
+            // Inicializar carga
+            loadProgress();
+        });
+    </script>
+
+    <script>
+        const logoData = {
+            1: { src: 'assets/logo_opcion1.jpg', badge: 'Opción 1: Vector Ascenso', colorClass: 'bg-amber-500 text-slate-950', name: 'Vector de Ascenso (Oro/Navy)' },
+            2: { src: 'assets/logo_opcion2.jpg', badge: 'Opción 2: Despertar Solar', colorClass: 'bg-blue-600 text-white', name: 'Despertar del Potencial (Zafiro)' },
+            3: { src: 'assets/logo_opcion3.jpg', badge: 'Opción 3: Brújula Esmeralda', colorClass: 'bg-emerald-600 text-white', name: 'Brújula del Propósito (Teal)' }
+        };
+
+        function switchLogo(num) {
+            const data = logoData[num];
+            if (!data) return;
+
+            const logoImg = document.getElementById('coachBrandLogo');
+            const thumbImg = document.getElementById('coachBannerThumb');
+            const badge = document.getElementById('logoBadgeText');
+
+            if (logoImg) logoImg.src = data.src;
+            if (thumbImg) thumbImg.src = data.src;
+            if (badge) {
+                badge.textContent = data.badge;
+                badge.className = 'absolute -bottom-2.5 left-1/2 -translate-x-1/2 text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider shadow whitespace-nowrap ' + data.colorClass;
+            }
+
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById('btnLogo' + i);
+                if (btn) {
+                    if (i === num) {
+                        btn.className = 'logo-btn px-3 py-1 rounded-full font-bold shadow transition-all flex items-center gap-1.5 ' + data.colorClass;
+                    } else {
+                        btn.className = 'logo-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition-all flex items-center gap-1.5';
+                    }
+                }
+            }
+
+            if (typeof showToast === 'function') {
+                showToast('Identidad visual actualizada: ' + data.name, 'success', 2500);
+            }
+        }
+    </script>
+
+    <!-- Botón Flotante Fijo de WhatsApp (Siempre Visible en Pantalla) -->
+    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 no-print">
+        <a href="https://wa.me/?text=Hola%20Coach%20Juan%20Daniel!%20Estoy%20completando%20la%20gu%C3%ADa%20Descubre%20Tu%20Prop%C3%B3sito%20y%20tengo%20una%20consulta." target="_blank" class="hidden sm:flex flex-col items-end bg-white text-slate-800 text-xs px-4 py-2 rounded-2xl shadow-2xl border border-slate-200/80 hover:border-emerald-300 transition-all group">
+            <span class="font-bold text-slate-900 group-hover:text-emerald-700 flex items-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i> WhatsApp Coach Juan Daniel
+            </span>
+            <span class="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>En línea • Asistente Inteligente 24/7</span>
+            </span>
+        </a>
+        <a href="https://wa.me/?text=Hola%20Coach%20Juan%20Daniel!%20Estoy%20completando%20la%20gu%C3%ADa%20Descubre%20Tu%20Prop%C3%B3sito%20y%20tengo%20una%20consulta." target="_blank" class="w-14 h-14 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-full flex items-center justify-center text-2xl shadow-2xl hover:scale-110 transition-all duration-300 relative border-2 border-white" title="Hablar con Coach Juan Daniel por WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-white animate-ping"></span>
+            <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white"></span>
+        </a>
+    </div>
+
+</body>
+</html>
